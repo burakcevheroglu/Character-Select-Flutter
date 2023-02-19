@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final statusProvider = StateProvider<Status>((ref) => Status.first);
+final isAnimate = StateProvider<bool>((ref) => false);
 
 class MainPage extends ConsumerWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class MainPage extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10),
             width: double.infinity,
-            height: 300,
+            height: 250,
             color: Colors.grey,
             child: Stack(
                 children: charStatus(ref.watch(statusProvider))),
@@ -46,9 +47,11 @@ class CharItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedAlign(
       key: ValueKey(char),
-      alignment: charPlacement(placement),
       duration: _duration,
-      child: Container(
+      curve: Curves.easeInBack,
+      alignment: charPlacement(placement),
+      child: AnimatedContainer(
+        duration: _duration,
         width: charSize(placement),
         height: charSize(placement),
         decoration: BoxDecoration(
@@ -63,7 +66,7 @@ class CharItemWidget extends StatelessWidget {
 enum Placement { first, second, third, fourth }
 enum Characters { char1, char2, char3, char4 }
 enum Status { first, second, third, fourth }
-const _duration = Duration(milliseconds: 300);
+const _duration = Duration(milliseconds: 500);
 
 AssetImage character(Characters char) {
   switch (char) {
@@ -170,7 +173,7 @@ class BottomButtons extends ConsumerWidget {
   }
 }
 
-class CharacterLines {
+class CharacterLines2 {
   List<Widget> first = const [
     CharItemWidget(placement: Placement.fourth, char: Characters.char4),
     CharItemWidget(placement: Placement.third, char: Characters.char3),
@@ -197,5 +200,35 @@ class CharacterLines {
     CharItemWidget(placement: Placement.third, char: Characters.char4),
     CharItemWidget(placement: Placement.second, char: Characters.char3),
     CharItemWidget(placement: Placement.first, char: Characters.char2),
+  ];
+}
+
+class CharacterLines {
+  List<Widget> first = const [
+    CharItemWidget(placement: Placement.third, char: Characters.char4),
+    CharItemWidget(placement: Placement.second, char: Characters.char3),
+    CharItemWidget(placement: Placement.first, char: Characters.char2),
+    CharItemWidget(placement: Placement.fourth, char: Characters.char1),
+  ];
+
+  List<Widget> second = const [
+    CharItemWidget(placement: Placement.second, char: Characters.char4),
+    CharItemWidget(placement: Placement.first, char: Characters.char3),
+    CharItemWidget(placement: Placement.fourth, char: Characters.char2),
+    CharItemWidget(placement: Placement.third, char: Characters.char1),
+  ];
+
+  List<Widget> third = const [
+    CharItemWidget(placement: Placement.first, char: Characters.char4),
+    CharItemWidget(placement: Placement.fourth, char: Characters.char3),
+    CharItemWidget(placement: Placement.third, char: Characters.char2),
+    CharItemWidget(placement: Placement.second, char: Characters.char1),
+  ];
+
+  List<Widget> fourth = const [
+    CharItemWidget(placement: Placement.fourth, char: Characters.char4),
+    CharItemWidget(placement: Placement.third, char: Characters.char3),
+    CharItemWidget(placement: Placement.second, char: Characters.char2),
+    CharItemWidget(placement: Placement.first, char: Characters.char1),
   ];
 }
